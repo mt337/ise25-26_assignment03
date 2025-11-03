@@ -68,3 +68,49 @@ Update title and description:
 ```shell
 curl --header "Content-Type: application/json" --request PUT --data '{"id":4,"name":"New coffee","description":"Great croissants","type":"CAFE","campus":"ALTSTADT","street":"Hauptstraße","houseNumber":"95","postalCode":69117,"city":"Heidelberg"}' http://localhost:8080/api/pos/4 # set correct POS id here and in the body
 ```
+
+## Commands we used
+#### Send a JSON Payload via curl using a POST request
+We used/tested 2 ways how you can do it:
+
+1. Directly with just one command:
+```shell
+curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Bäckerei Kohlmann\",\"description\":\"Campus Bäckerei\",\"type\":\"CAFE\",\"campus\":\"INF\",\"street\":\"Im Neuenheimer Feld\",\"houseNumber\":\"370\",\"postalCode\":69120,\"city\":\"Heidelberg\"}" http://localhost:8080/api/pos
+```
+>Note that on windows when using cmd you need to escape the double quotes inside the JSON string with backslashes
+
+2. or create a [name].json file with the payload
+```json
+{
+  "name": "Bäckerei Kohlmann",
+  "description": "Campus Bäckerei",
+  "type": "CAFE",
+  "campus": "INF",
+  "street": "Im Neuenheimer Feld",
+  "houseNumber": "370",
+  "postalCode": 69120,
+  "city": "Heidelberg"
+}
+```
+  
+  and send it like this:
+```shell
+curl --header "Content-Type: application/json" --request POST --data @[name].json http://localhost:8080/api/pos
+```
+> IT's a much better approach on windows beacuse of readibility
+
+#### GET request - confirm that entry was succesfully saved
+After creating POS you will get a id in your answer - e. g.:
+```
+{"id":5,"createdAt":"2025-11-03T11:42:14.8909882","updatedAt":"2025-11-03T11:42:14.8909882","name":"Bäckerei Kohlmann","description":"Campus Bäckerei","type":"CAFE","campus":"INF","street":"Im Neuenheimer Feld","houseNumber":"370","postalCode":69120,"city":"Heidelberg"}
+```
+
+If you got the id you can confirm that your entry was successfully saved by using this command:
+```shell
+curl http://localhost:8080/api/pos/5
+```
+
+Or if you don't have the id, use this instead, it will display all POS and you can manually search for your entry:
+```shell
+curl http://localhost:8080/api/pos
+```
